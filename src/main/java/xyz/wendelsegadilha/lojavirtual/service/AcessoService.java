@@ -13,9 +13,15 @@ public class AcessoService {
 	private AcessoRepository acessoRepository;
 
 	public Acesso save(Acesso acesso) {
-		
-		/*Qualquer tipo de validação*/
-		
+
+		/* Qualquer tipo de validação */
+
 		return acessoRepository.save(acesso);
+	}
+
+	public void delete(Acesso acesso) {
+
+		acessoRepository.deleteById(acesso.getId());
+		
 	}
 }
