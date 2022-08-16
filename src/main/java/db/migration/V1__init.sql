@@ -20,12 +20,12 @@ SET row_security = off;
 -- Name: loja_virtual_mentoria; Type: DATABASE; Schema: -; Owner: postgres
 --
 
-CREATE DATABASE loja_virtual_mentoria WITH TEMPLATE = template0 ENCODING = 'UTF8' LC_COLLATE = 'Portuguese_Brazil.1252' LC_CTYPE = 'Portuguese_Brazil.1252';
+--CREATE DATABASE loja_virtual_mentoria WITH TEMPLATE = template0 ENCODING = 'UTF8' LC_COLLATE = 'Portuguese_Brazil.1252' LC_CTYPE = 'Portuguese_Brazil.1252';
 
 
 ALTER DATABASE loja_virtual_mentoria OWNER TO postgres;
 
-\connect loja_virtual_mentoria
+--\connect loja_virtual_mentoria
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
