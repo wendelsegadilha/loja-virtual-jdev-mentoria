@@ -15,6 +15,10 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 public class LojaVirtualMentoriaApplication {
 
 	public static void main(String[] args) {
+		
+		/*Gera senha para teste*/
+		//System.out.println("Senha: " + new BCryptPasswordEncoder().encode("123"));//
+		
 		SpringApplication.run(LojaVirtualMentoriaApplication.class, args);
 	}
 
