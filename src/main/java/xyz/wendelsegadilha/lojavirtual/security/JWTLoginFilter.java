@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -18,42 +19,51 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import xyz.wendelsegadilha.lojavirtual.model.Usuario;
 
-
 public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
-	
-	/*Confgurando o gerenciado de autenticacao*/
+
+	/* Confgurando o gerenciado de autenticacao */
 	public JWTLoginFilter(String url, AuthenticationManager authenticationManager) {
-	
-		/*Obriga a autenticat a url*/
+
+		/* Obriga a autenticat a url */
 		super(new AntPathRequestMatcher(url));
-		
-		/*Gerenciador de autenticao*/
+
+		/* Gerenciador de autenticao */
 		setAuthenticationManager(authenticationManager);
-		
+
 	}
 
-	
-	/*Retorna o usuário ao processr a autenticacao*/
+	/* Retorna o usuário ao processr a autenticacao */
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
 			throws AuthenticationException, IOException, ServletException {
-		/*Obter o usuário*/
+		/* Obter o usuário */
 		Usuario user = new ObjectMapper().readValue(request.getInputStream(), Usuario.class);
-		
-		/*Retorna o user com login e senha*/
-		return getAuthenticationManager().
-				authenticate(new UsernamePasswordAuthenticationToken(user.getLogin(), user.getSenha()));
+
+		/* Retorna o user com login e senha */
+		return getAuthenticationManager()
+				.authenticate(new UsernamePasswordAuthenticationToken(user.getLogin(), user.getSenha()));
 	}
-	
+
 	@Override
 	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
 			Authentication authResult) throws IOException, ServletException {
 
 		try {
 			new JWTTokenAutenticacaoService().addAuthentication(response, authResult.getName());
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+	
+	/*Retorna informações para o cliente em caso de falha na autenticação*/
+	@Override
+	protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
+			AuthenticationException failed) throws IOException, ServletException {
+		if (failed instanceof BadCredentialsException) {
+			response.getWriter().write("Usuário ou senha inválidos.");
+		} else {
+			response.getWriter().write("Falha ao autenticar:  " + failed.getMessage());
 		}
 	}
 
