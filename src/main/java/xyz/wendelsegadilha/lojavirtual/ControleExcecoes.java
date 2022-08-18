@@ -82,5 +82,18 @@ public class ControleExcecoes extends ResponseEntityExceptionHandler {
 		
 	}
 	
+	/*captura exceptions customizadas*/
+	@ExceptionHandler(ExceptionMentoriaJava.class)
+	public ResponseEntity<Object> handleExceptionCustom (ExceptionMentoriaJava ex) {
+		
+		ObjetoErroDTO objetoErroDTO = new ObjetoErroDTO();
+		
+		objetoErroDTO.setError(ex.getMessage());
+		objetoErroDTO.setCode(HttpStatus.OK.toString());
+		
+		return new ResponseEntity<Object>(objetoErroDTO, HttpStatus.OK);
+		
+	}
+	
 
 }

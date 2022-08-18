@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import xyz.wendelsegadilha.lojavirtual.ExceptionMentoriaJava;
 import xyz.wendelsegadilha.lojavirtual.model.Acesso;
 import xyz.wendelsegadilha.lojavirtual.repository.AcessoRepository;
 import xyz.wendelsegadilha.lojavirtual.service.AcessoService;
@@ -30,7 +31,14 @@ public class AcessoController {
 
 	@ResponseBody
 	@PostMapping(value = "**/salvarAcesso")
-	public ResponseEntity<Acesso> salvarAcesso(@RequestBody Acesso acesso) {
+	public ResponseEntity<Acesso> salvarAcesso(@RequestBody Acesso acesso) throws Exception {
+		
+		if(acesso.getId() == null) {
+			List<Acesso> acessos = acessoRepository.buscarAcessoDesc(acesso.getDescricao().toUpperCase());
+			if (!acessos.isEmpty()) {
+				throw new ExceptionMentoriaJava("Já existe Acesso com essa descrição: " + acesso.getDescricao());
+			}
+		}
 		
 		Acesso acessoSalvo = acessoService.save(acesso);
 		
@@ -57,9 +65,13 @@ public class AcessoController {
 	
 	@ResponseBody
 	@GetMapping(value = "**/obterAcesso/{id}")
-	public ResponseEntity<Acesso> obterAcesso(@PathVariable("id") Long id) {
+	public ResponseEntity<Acesso> obterAcesso(@PathVariable("id") Long id) throws Exception {
 		
-		Acesso acesso = acessoRepository.findById(id).get();
+		Acesso acesso = acessoRepository.findById(id).orElse(null);
+		
+		if (acesso == null) {
+			throw new ExceptionMentoriaJava("Acesso de código " + id + " não encontrado");
+		}
 		
 		return new ResponseEntity<Acesso>(acesso, HttpStatus.OK);
 	}
@@ -69,7 +81,7 @@ public class AcessoController {
 	@GetMapping(value = "**/buscarPorDesc/{desc}")
 	public ResponseEntity<List<Acesso>> obterAcesso(@PathVariable("desc") String desc) {
 		
-		List<Acesso> acessos = acessoRepository.buscarAcessoDesc(desc);
+		List<Acesso> acessos = acessoRepository.buscarAcessoDesc(desc.toUpperCase());
 		
 		return new ResponseEntity<List<Acesso>>(acessos, HttpStatus.OK);
 	}
