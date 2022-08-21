@@ -1,5 +1,6 @@
 package xyz.wendelsegadilha.lojavirtual;
 
+import java.util.Calendar;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -40,7 +41,7 @@ public class LojaVirtualMentoriaApplicationTests extends TestCase{
 		MockMvc mockMvc = builder.build();
 		
 		Acesso acesso = new Acesso();
-		acesso.setDescricao("ROLE_COMPRADOR");
+		acesso.setDescricao("ROLE_COMPRADOR " + Calendar.getInstance().getTimeInMillis());
 		
 		ObjectMapper objectMapper = new ObjectMapper();
 		
