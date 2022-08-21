@@ -23,8 +23,17 @@ public class PessoaJuridica extends Pessoa {
 	@Column(nullable = false)
 	private String razaoSocial;
 	
+	@Column(nullable = false)
+	private String nomeFantasia;
+	
 	private String categoria;
 	
+	public String getNomeFantasia() {
+		return nomeFantasia;
+	}
+	public void setNomeFantasia(String nomeFantasia) {
+		this.nomeFantasia = nomeFantasia;
+	}
 	public String getCnpj() {
 		return cnpj;
 	}
