@@ -47,6 +47,8 @@ public class PessoaUserService {
 
 			usuarioPj = usuarioRepository.save(usuarioPj);
 			usuarioRepository.insereAcessoUserPj(usuarioPj.getId());
+			
+			/*Fazer o envio de e-mail do login e da senha*/
 		}
 
 		return pessoaJuridica;

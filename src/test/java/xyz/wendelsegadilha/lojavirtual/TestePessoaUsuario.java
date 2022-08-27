@@ -1,13 +1,17 @@
 package xyz.wendelsegadilha.lojavirtual;
 
+import java.util.Calendar;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Profile;
 
 import junit.framework.TestCase;
 import xyz.wendelsegadilha.lojavirtual.controller.PessoaController;
 import xyz.wendelsegadilha.lojavirtual.model.PessoaJuridica;
 
+@Profile("test")
 @SpringBootTest(classes = LojaVirtualMentoriaApplication.class)
 public class TestePessoaUsuario extends TestCase {
 
@@ -18,7 +22,7 @@ public class TestePessoaUsuario extends TestCase {
 	public void testCadPessoaFisica() throws ExceptionMentoriaJava {
 
 		PessoaJuridica pessoaJuridica = new PessoaJuridica();
-		pessoaJuridica.setCnpj("865545598956556");
+		pessoaJuridica.setCnpj(""+Calendar.getInstance().getTimeInMillis());
 		pessoaJuridica.setNome("Alex fernando");
 		pessoaJuridica.setEmail("alex.fernando.egidio@gmail.com");
 		pessoaJuridica.setTelefone("45999795800");
