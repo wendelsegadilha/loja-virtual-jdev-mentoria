@@ -25,6 +25,12 @@ public class PessoaUserService {
 	private JdbcTemplate jdbcTemplate;
 
 	public PessoaJuridica salvarPessoaJuridica(PessoaJuridica pessoaJuridica) {
+		
+		/*Seta os endereços antes de salvar*/
+		for (int i = 0; i < pessoaJuridica.getEnderecos().size(); i++) {
+			pessoaJuridica.getEnderecos().get(i).setPessoa(pessoaJuridica);
+			pessoaJuridica.getEnderecos().get(i).setEmpresa(pessoaJuridica);
+		}
 
 		pessoaJuridica = pesssoaRepository.save(pessoaJuridica);
 
