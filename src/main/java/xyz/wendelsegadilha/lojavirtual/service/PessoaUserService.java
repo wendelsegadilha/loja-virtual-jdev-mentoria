@@ -59,8 +59,8 @@ public class PessoaUserService {
 			
 			StringBuilder menssagem = new StringBuilder();
 			menssagem.append("<b>Segue abaixo seus dados de acesso para a Loja Virtual</b><br><br>");
-			menssagem.append("<b>login: </b>").append(pessoaJuridica.getEmail()).append("<br>");
-			menssagem.append("<b>senha: </b>").append(senha).append("<br><br>");
+			menssagem.append("<b>Login: </b>").append(pessoaJuridica.getEmail()).append("<br>");
+			menssagem.append("<b>Senha: </b>").append(senha).append("<br><br>");
 			menssagem.append("Obrigado!");
 			
 			/*Fazer o envio de e-mail do login e da senha*/
