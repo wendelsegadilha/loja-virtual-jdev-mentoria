@@ -1,16 +1,16 @@
 package xyz.wendelsegadilha.lojavirtual.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.Calendar;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import xyz.wendelsegadilha.lojavirtual.model.PessoaJuridica;
 import xyz.wendelsegadilha.lojavirtual.model.Usuario;
 import xyz.wendelsegadilha.lojavirtual.repository.PesssoaRepository;
 import xyz.wendelsegadilha.lojavirtual.repository.UsuarioRepository;
-
-import java.util.Calendar;
 
 @Service
 public class PessoaUserService {
@@ -23,6 +23,9 @@ public class PessoaUserService {
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
+	
+	@Autowired
+	private ServiceSendEmail ServiceSendEmail;
 
 	public PessoaJuridica salvarPessoaJuridica(PessoaJuridica pessoaJuridica) {
 		
@@ -54,7 +57,18 @@ public class PessoaUserService {
 			usuarioPj = usuarioRepository.save(usuarioPj);
 			usuarioRepository.insereAcessoUserPj(usuarioPj.getId());
 			
+			StringBuilder menssagem = new StringBuilder();
+			menssagem.append("<b>Segue abaixo seus dados de acesso para a Loja Virtual</b><br><br>");
+			menssagem.append("<b>login: </b>").append(pessoaJuridica.getEmail()).append("<br>");
+			menssagem.append("<b>senha: </b>").append(senha).append("<br><br>");
+			menssagem.append("Obrigado!");
+			
 			/*Fazer o envio de e-mail do login e da senha*/
+			try {
+				ServiceSendEmail.enviarEmailHtml("Dados de acesso Loja Virtual", menssagem.toString(), pessoaJuridica.getEmail());
+			} catch (Exception e) {
+				e.printStackTrace();
+			} 
 		}
 
 		return pessoaJuridica;
